@@ -1,10 +1,13 @@
 package main;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class MontrealTradedProductsImpl implements MontrealTradedProducts {
     public List<Product> productList = new ArrayList<Product>();
     Map<Product, Integer> mapOfTrackedTrades = new HashMap<Product, Integer>(); //map of products and their quantity
+    int year = LocalDate.now().getYear();
+    int month = LocalDate.now().getMonthValue();
 
     @Override
     public void addNewProduct(Product product) throws ProductAlreadyRegisteredException {
@@ -41,22 +44,20 @@ public class MontrealTradedProductsImpl implements MontrealTradedProducts {
         return mapOfTrackedTrades
                 .entrySet()
                 .stream()
+                .filter(trade -> trade.getKey().getYear() == year && trade.getKey().getMonth() == month)
                 .map(trades -> trades.getValue()) //gets trade quantity
-                .reduce(0, (quantity1, quantity2) -> quantity1 + quantity2);
+                .reduce(0, Integer::sum);
     }
 
     @Override
     public double totalValueOfDaysTradedProducts() {
-        System.out.println(mapOfTrackedTrades);
+
         return mapOfTrackedTrades
                 .entrySet()
                 .stream()
-                .map(trades -> {
-                    double totalValue;
-                    totalValue = trades.getKey().getPrice() * trades.getValue(); //multiplies price and quantity
-                    return totalValue;
-                })
-                .reduce(0.0, (value1,value2) -> value1 + value2);
+                .filter(trade -> trade.getKey().getYear() == year && trade.getKey().getMonth() == month)
+                .map(trade -> trade.getKey().getPrice() * trade.getValue()) //multiplies price and quantity
+                .reduce(0.0, Double::sum);
 
     }
 

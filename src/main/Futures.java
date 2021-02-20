@@ -10,6 +10,8 @@ public class Futures extends Product {
     public Futures(String exchange, String contractCode, Integer month, Integer year, String productId, ProductPricingService productPricingService) {
 
         super(productId);
+        super.setMonth(month);
+        super.setYear(year);
 
         this.exchange = exchange;
         this.contractCode = contractCode;
@@ -17,7 +19,6 @@ public class Futures extends Product {
         this.year = year;
         this.productPricingService = productPricingService;
     }
-
 
     @Override
     public double getPrice(){

@@ -3,6 +3,8 @@ package test;
 import main.*;
 import org.mockito.Mockito;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class MontrealTradedProductsImplTest {
@@ -85,7 +87,7 @@ class MontrealTradedProductsImplTest {
     void totalValueOfDaysTradedProducts() {
         Product stockProd = new Stock("C", "US", "aapl234", productPricingServiceMock);
 
-        Product futureProd = new Futures("INTC", "c432234", 02, 2020, "ft2343", productPricingServiceMock);
+        Product futureProd = new Futures("INTC", "c432234", LocalDate.now().getMonthValue(), LocalDate.now().getYear(), "ft2343", productPricingServiceMock);
 
         try {
             montrealTradedProductsImpl.addNewProduct(stockProd);
